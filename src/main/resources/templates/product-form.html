@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Product</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h2 {
+            color: #5a67d8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #4a5568;
+        }
+        .btn-primary {
+            background-color: #5a67d8;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #4c51bf;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h2>Add Product</h2>
+  <form th:action="@{/api/v1/transport/product}" th:object="${product}" method="post">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="productName">Product Name</label>
+          <input type="text" id="productName" class="form-control" th:field="*{productName}" required>
+        </div>
+        <div class="form-group">
+          <label for="senderName">Sender Name</label>
+          <input type="text" id="senderName" class="form-control" th:field="*{senderName}" required>
+        </div>
+        <div class="form-group">
+          <label for="senderPhone">Sender Phone</label>
+          <input type="text" id="senderPhone" class="form-control" th:field="*{senderPhone}" required>
+        </div>
+        <div class="form-group">
+          <label for="receiverName">Receiver Name</label>
+          <input type="text" id="receiverName" class="form-control" th:field="*{receiverName}" required>
+        </div>
+        <div class="form-group">
+          <label for="receiverPhone">Receiver Phone</label>
+          <input type="text" id="receiverPhone" class="form-control" th:field="*{receiverPhone}" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="receiverAdress">Receiver Address</label>
+          <input type="text" id="receiverAdress" class="form-control" th:field="*{receiverAdress}" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" class="form-control" th:field="*{quantity}" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" class="form-control" th:field="*{price}" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <input type="text" id="category" class="form-control" th:field="*{category}" required>
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" class="form-control" th:field="*{status}" required>
+            <option value="" disabled>Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Arrived">Arrived</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- Description field taking full row width -->
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" class="form-control" th:field="*{description}" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mt-3">Save Product</button>
+  </form>
+</div>
+</body>
+</html>

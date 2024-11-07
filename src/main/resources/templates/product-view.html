@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h2 {
+            color: #5a67d8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .list-group-item strong {
+            color: #4a5568;
+        }
+        .btn-secondary {
+            background-color: #5a67d8;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #4c51bf;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2><i class="fas fa-box"></i> Product Details</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Product ID:</strong> <span th:text="${product.productId}"></span></li>
+        <li class="list-group-item"><strong>Product Name:</strong> <span th:text="${product.productName}"></span></li>
+        <li class="list-group-item"><strong>Sender Name:</strong> <span th:text="${product.senderName}"></span></li>
+        <li class="list-group-item"><strong>Sender Phone:</strong> <span th:text="${product.senderPhone}"></span></li>
+        <li class="list-group-item"><strong>Receiver Name:</strong> <span th:text="${product.receiverName}"></span></li>
+        <li class="list-group-item"><strong>Receiver Phone:</strong> <span th:text="${product.receiverPhone}"></span></li>
+        <li class="list-group-item"><strong>Receiver Address:</strong> <span th:text="${product.receiverAdress}"></span></li>
+        <li class="list-group-item"><strong>Quantity:</strong> <span th:text="${product.quantity}"></span></li>
+        <li class="list-group-item"><strong>Price:</strong> $<span th:text="${product.price}"></span></li>
+        <li class="list-group-item"><strong>Description:</strong> <span th:text="${product.description}"></span></li>
+        <li class="list-group-item"><strong>Category:</strong> <span th:text="${product.category}"></span></li>
+    </ul>
+    <a href="/products" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left"></i> Back to Product List</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Product List</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .container-fluid {
+            margin-top: 40px;
+        }
+        h2 {
+            color: #5a67d8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .table {
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .btn-group {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .btn-info, .btn-danger, .btn-success {
+            color: #fff;
+        }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <h2>Product List</h2>
+  <a href="/api/v1/transport/add" class="btn btn-primary mb-3">Add New Product</a>
+
+  <!-- Search and Filter Section -->
+  <div class="mb-4">
+    <input type="text" id="searchProductId" placeholder="Search by Product ID" class="form-control" style="width: 200px; display: inline;">
+    <input type="date" id="startDate" class="form-control" style="width: 200px; display: inline;">
+    <input type="date" id="endDate" class="form-control" style="width: 200px; display: inline;">
+    <button onclick="filterProducts()" class="btn btn-primary">Search</button>
+  </div>
+
+  <!-- Product Table -->
+  <table class="table table-hover" id="productTable">
+    <thead>
+    <tr>
+      <th>P_ID</th>
+      <th>P_NAME</th>
+      <th>CATEGORY</th>
+      <th>S_NAME</th>
+      <th>S_PHONE</th>
+      <th>R_NAME</th>
+      <th>R_PHONE</th>
+      <th>R_ADDRESS</th>
+      <th>QTY</th>
+      <th>PRICE</th>
+      <th>DATE</th>
+      <th>STATUS</th>
+      <th>DESCRIPTION</th>
+      <th>ACTIONS</th>
+    </tr>
+    </thead>
+    <tbody id="productTableBody">
+    <tr th:each="product : ${products}">
+      <td th:text="${product.productId}"></td>
+      <td th:text="${product.productName}"></td>
+      <td th:text="${product.category}"></td>
+      <td th:text="${product.senderName}"></td>
+      <td th:text="${product.senderPhone}"></td>
+      <td th:text="${product.receiverName}"></td>
+      <td th:text="${product.receiverPhone}"></td>
+      <td th:text="${product.receiverAdress}"></td>
+      <td th:text="${product.quantity}"></td>
+      <td th:text="${product.price}"></td>
+      <td th:text="${product.date}"></td>
+      <td th:text="${product.status}"></td>
+      <td th:text="${product.description}"></td>
+      <td>
+        <div class="btn-group">
+          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" th:attr="data-target='#viewModal-' + ${product.id}">View</button>
+          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" th:attr="data-target='#deleteModal-' + ${product.id}">Delete</button>
+          <a th:href="@{/api/v1/transport/receipt/{id}(id=${product.id})}" class="btn btn-success btn-sm">Print</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- View and Update Status Modal -->
+<div th:each="product : ${products}">
+  <div th:id="'viewModal-' + ${product.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewModalLabel">View and Update Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Product ID:</strong> <span th:text="${product.productId}"></span></p>
+          <p><strong>Product Name:</strong> <span th:text="${product.productName}"></span></p>
+          <p><strong>Status:</strong>
+            <select th:id="'statusSelect-' + ${product.id}" class="form-control">
+              <option value="Pending" th:selected="${product.status == 'Pending'}">Pending</option>
+              <option value="Arrived" th:selected="${product.status == 'Arrived'}">Arrived</option>
+              <option value="Delivered" th:selected="${product.status == 'Delivered'}">Delivered</option>
+            </select>
+          </p>
+          <input type="hidden" id="csrfToken" th:value="${_csrf.token}"/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" th:onclick="'saveStatus(' + ${product.id} + ')'">Save Status</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal Template -->
+<div th:each="product : ${products}">
+  <div th:id="'deleteModal-' + ${product.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this product?</p>
+          <p><strong>Product ID:</strong> <span th:text="${product.productId}"></span></p>
+          <p><strong>Product Name:</strong> <span th:text="${product.productName}"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a th:href="@{/api/v1/transport/delete/{id}(id=${product.id})}" class="btn btn-danger">Confirm Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+function saveStatus(productId) {
+    const statusElement = document.getElementById(`statusSelect-${productId}`);
+    if (!statusElement) {
+        console.error(`Status select element not found for productId: ${productId}`);
+        return; // Exit function if element is not found
+    }
+
+    const status = statusElement.value;
+    const csrfToken = document.getElementById('csrfToken').value;
+
+    fetch(`/api/v1/transport/update-status/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ status: status })
+    })
+    .then(response => {
+        if (response.ok) {
+            location.reload(); // Refresh page to show updated status
+        } else {
+            alert('Failed to update status');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function filterProducts() {
+    const productId = document.getElementById('searchProductId').value.toLowerCase();
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    const rows = Array.from(document.querySelectorAll("#productTableBody tr"));
+    rows.forEach(row => {
+      const idCell = row.cells[0].textContent.toLowerCase();
+      const dateCell = row.cells[10].textContent;
+
+      const matchesId = productId ? idCell.includes(productId) : true;
+      let matchesDateRange = true;
+      if (startDate || endDate) {
+        const rowDate = new Date(dateCell);
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+
+        matchesDateRange = (!start || rowDate >= start) && (!end || rowDate <= end);
+      }
+
+      row.style.display = matchesId && matchesDateRange ? "" : "none";
+    });
+}
+</script>
+</body>
+</html>
