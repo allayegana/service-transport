@@ -67,7 +67,7 @@
   <div th:if="${error}" class=" text-center alert alert-danger" role="alert">
     <p th:text="${error}"></p>
   </div>
-  <a href="/api/v1/inventory/home" class="btn btn-outline-primary btn-back link">
+  <a href="/api/v1/transport/home" class="btn btn-outline-primary btn-back link">
     <i class="fas fa-arrow-left"></i> Back to Dashboard
   </a>
   <table class="table table-hover table-striped mt-4">
@@ -111,7 +111,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="editUserForm" th:action="@{/api/v1/inventory/users/update}" method="post">
+        <form id="editUserForm" th:action="@{/api/v1/transport/users/update}" method="post">
           <input type="hidden" id="editUserId" name="id">
           <div class="form-group">
             <label for="editUsername">Name</label>
@@ -182,7 +182,7 @@
         var modal = $(this);
         modal.find('#deleteUsername').text(username);
         $('#confirmDeleteBtn').off('click').on('click', function () {
-            window.location.href = '/api/v1/inventory/users/delete/' + userId;
+            window.location.href = '/api/v1/transport/users/delete/' + userId;
         });
     });
 
