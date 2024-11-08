@@ -1,10 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Access Denied</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Load Font Awesome from a reliable CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+        body, html {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://img.freepik.com/premium-photo/international-package-delivery-concept-global-purchases-transportation-business-distribution-trade-goods-around-world_968529-248368.jpg?w=996');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+        .error-icon {
+            font-size: 4rem;
+            color: #dc3545;
+            animation: shake 0.5s;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+    </style>
 </head>
 <body>
-$END$
+<!-- Modal -->
+<div class="modal fade" id="accessDeniedModal" tabindex="-1" role="dialog" aria-labelledby="accessDeniedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="accessDeniedModalLabel">Access Denied</h5>
+        <p>You don't have permission to access this page.</p>
+      </div>
+      <div class="modal-body text-center">
+        <div class="error-icon">
+          <i class="fas fa-ban"></i> <!-- Icon only -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/api/v1/transport/home" class="btn btn-secondary link">Go Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#accessDeniedModal').modal('show');
+
+    // Redirect to home after 5 seconds
+    setTimeout(function(){
+        window.location.href = "/api/v1/transport/home";
+    }, 7000); // 5000ms = 5 seconds
+});
+
+  document.querySelectorAll('.link').forEach(link => {
+    link.addEventListener('mouseover', function() {
+      this.dataset.href = this.getAttribute('href'); // Store the href in a data attribute
+      this.removeAttribute('href'); // Remove the href to hide the URL
+    });
+
+    link.addEventListener('mouseout', function() {
+      this.setAttribute('href', this.dataset.href); // Restore the href
+    });
+
+    link.addEventListener('click', function(event) {
+      const url = this.dataset.href;
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+</script>
 </body>
 </html>

@@ -37,11 +37,12 @@ public class SecurityConfigura {
                             .anyRequest().authenticated();
                 })
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // Sets the URL for logout
-                        .logoutSuccessUrl("/api/v1/transport/login?logout") // Redirects to login page with a message after logout
-                        .invalidateHttpSession(true) // Invalidate session on logout
-                        .deleteCookies("JSESSIONID") // Delete session cookies
-                        .permitAll())
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/api/v1/transport/login?logout")
+                        .permitAll()
+                )
+
+
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(accessDeniedHandler()))
                 .build();
