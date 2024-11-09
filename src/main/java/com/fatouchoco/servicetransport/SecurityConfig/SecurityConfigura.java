@@ -32,7 +32,7 @@ public class SecurityConfigura {
                 .authorizeHttpRequests((requests) -> {
                     requests
                             .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**", "/api/v1/transport/login", "/api/v1/transport/register").permitAll()
-                            .requestMatchers("/api/v1/transport/reports", "/api/v1/transport/product", "/api/v1/transport/users").hasAnyRole("MANAGER")
+                            .requestMatchers("/api/v1/transport/reports", "/api/v1/transport/register", "/api/v1/transport/users").hasAnyRole("MANAGER")
                             .requestMatchers("/api/v1/transport/update-status/**").authenticated()
                             .anyRequest().authenticated();
                 })
