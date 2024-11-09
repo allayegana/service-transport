@@ -8,6 +8,8 @@ RUN mvn clean package -DskipTests
 # Stage 2: Create the final image
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY --from=build /app/target/servicetransport-0.0.1-SNAPSHOT.jar app.jar
+# Copy the JAR file with the name `app.jar`
+COPY --from=build /app/target/app.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
