@@ -95,6 +95,7 @@
 	<build>
 		<finalName>app</finalName>
 		<plugins>
+			<!-- Maven Compiler Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -104,18 +105,19 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
+
+			<!-- Maven Jar Plugin for Executable JAR -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.fatouchoco.servicetransport.ServicetransportApplication</mainClass> <!-- Replace this with your main class -->
-						</manifest>
-					</archive>
-				</configuration>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.3.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
