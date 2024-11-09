@@ -3,7 +3,6 @@ package com.fatouchoco.servicetransport.Controller;
 import com.fatouchoco.servicetransport.Model.Product;
 import com.fatouchoco.servicetransport.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,7 +79,6 @@ public class HomeController {
         productService.updateStatus(id, status);
         return ResponseEntity.ok().build();
     }
-
 
 
     @GetMapping("/delete/{id}")
